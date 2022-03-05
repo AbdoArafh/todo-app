@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    
+    <title>Frontend Mentor | Todo app</title>
+
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+    <style>
+      .attribution { font-size: 11px; text-align: center; }
+      .attribution a { color: hsl(228, 45%, 44%); }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="header">
+        <h1>TODO</h1>
+        <button id="toggleDarkEl"></button>
+      </div>
+
+      <div class="input">
+        <div class="mark">
+          <input id="checkboxEl" type="checkbox">
+          <div class="checkmark"></div>
+        </div>
+        <form id="form">
+          <input type="text" id="inputEl" placeholder="Create a new todo..." autofocus autocomplete="off">
+        </form>
+      </div>
+
+      <div class="list">
+        <ul id="listEl" class="">
+          <!-- <li class="completed">
+              <div class="mark">
+                <input type="checkbox">
+                <div class="checkmark"></div>
+              </div>
+              <span>
+                Complete online JavaScript course
+              </span>
+            </li>
+          <li class="">
+              <div class="mark">
+                <input type="checkbox">
+                <div class="checkmark"></div>
+              </div>
+              <span>
+                Jog around the park 3x
+              </span>
+            </li>
+          <li class="">
+              <div class="mark">
+                <input type="checkbox">
+                <div class="checkmark"></div>
+              </div>
+              <span>
+                10 minutes meditation
+              </span>
+            </li>
+          <li class="">
+              <div class="mark">
+                <input type="checkbox">
+                <div class="checkmark"></div>
+              </div>
+              <span>
+                Read for 1 hour
+              </span>
+            </li>
+          <li class="">
+              <div class="mark">
+                <input type="checkbox">
+                <div class="checkmark"></div>
+              </div>
+              <span>
+                Pick up groceries
+              </span>
+            </li>
+          <li class="">
+              <div class="mark">
+                <input type="checkbox">
+                <div class="checkmark"></div>
+              </div>
+              <span>
+                Complete Todo App on Frontend Mentor
+              </span>
+            </li> -->
+        </ul>
+        <div class="controls">
+
+          <div><span id="itemsLeftEl">5</span> items left</div>
+
+          <div id="filtersEl" class="filters">
+            <span class="active">All</span>
+            <span>Active</span>
+            <span>Completed</span>
+          </div>
+
+          <div id="clearEl" class="clear">Clear Completed</div>
+        </div>
+      </div>
+
+      <div class="tip">Drag and drop to reorder list</div>
+
+      <div class="attribution">
+        Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+        Coded by <a href="https://www.frontendmentor.io/profile/AbdoArafh">Abdurrahman Arafh</a>.
+      </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
