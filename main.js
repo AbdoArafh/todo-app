@@ -1,9 +1,40 @@
 import './sass/style.scss';
 
+// --------------- imitating JQuery ----------------------
+
 const $ = document.querySelector.bind(document);
+const $$ = document.querySelectorAll.bind(document);
 HTMLElement.prototype.on = function(event, handler, options) {
   this.addEventListener(event, handler, options);
 }
+
+// ---------------- select elements -----------------------
+
+const listEl = $("#listEl");
+const inputEl = $("#inputEl");
+const checkboxEl = $("#checkboxEl");
+const filtersEl = $("#filtersEl");
+const toggleDarkEl = $("#toggleDarkEl");
+const itemsLeftEl = $("#itemsLeftEl");
+
+
+// ------------ adding background images ------------------
+
+import body_bg_desktop_light from './images/bg-desktop-light.jpg'
+import icon_moon from './images/icon-moon.svg'
+import icon_sun from './images/icon-sun.svg'
+import checkmark from './images/icon-check.svg'
+
+const checkmarkGradient = "linear-gradient(to bottom right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))";
+Array.from($$(".mark input[type=checkbox]")).forEach(handleCheckmark);
+
+document.body.style.backgroundImage = `url("${body_bg_desktop_light}")`;
+
+const toggleDarkImages = [`url("${icon_moon}")`, `url("${icon_sun}")`];
+let isDark = false;
+
+toggleDarkEl.style.backgroundImage = toggleDarkImages[0];
+toggleDarkEl.on("click", handleToggleDark);
 
 class Note {
   constructor(value, checked=false) {
@@ -13,16 +44,33 @@ class Note {
 }
 
 let notes = [];
-const listEl = $("#listEl");
-const inputEl = $("#inputEl");
-const checkboxEl = $("#checkboxEl");
-const filtersEl = $("#filtersEl");
+
+function handleToggleDark(e) {
+  isDark = !isDark;
+  e.target.style.backgroundImage = toggleDarkImages[Number(isDark)];
+}
+
+function renderCheckmark(el) {
+  const checked = el.checked;
+  const checkmarkEl = el.parentElement.querySelector(".checkmark");
+  checkmarkEl.style.backgroundImage = checked ? `url("${checkmark}"), ${checkmarkGradient}` : "";
+}
+
+function handleCheckmark(c) {
+  c.addEventListener("input", e => renderCheckmark(e.target));
+}
+
+function renderItemsLeftEl() {
+  itemsLeftEl.textContent = notes.filter(note => !note.checked).length;
+}
 
 function handleCheckbox(checkbox) {
   const li = checkbox.parentElement.parentElement;
   const index = Array.from(listEl.children).indexOf(li);
   li.parentElement.children[index].classList.toggle("completed");
   notes[index].checked = !notes[index].checked;
+  renderCheckmark(checkbox);
+  renderItemsLeftEl();
   updateLocalStorage();
   return false;
 }
@@ -38,6 +86,7 @@ function checkEl(checked) {
   const checkmark = document.createElement("div");
   checkmark.className = "checkmark";
   mark.appendChild(checkmark);
+  renderCheckmark(checkbox);
   return mark;
 }
 
@@ -75,6 +124,7 @@ function handleSubmit(event) {
   const note = new Note(inputEl.value, checkboxEl.checked);
   inputEl.value = "";
   checkboxEl.checked = false;
+  renderItemsLeftEl();
   appendNote(note);
   filterNotes();
 }
@@ -128,6 +178,8 @@ $("#clearEl").on(
 window.addEventListener("load", () => {
   notes = JSON.parse(localStorage.getItem("notes") ?? "[]");
   chosenFilter = localStorage.getItem("chosenFilter") ?? "All";
+  $$(".mark input[type=checkbox]").forEach(renderCheckmark);
+  renderItemsLeftEl();
   renderFilters(filters);
   filterNotes();
 });

@@ -7,7 +7,6 @@ body {
   margin: 0;
   display: grid;
   place-items: center;
-  background-image: url("images/bg-desktop-light.jpg");
   background-repeat: no-repeat;
   background-size: 100%;
   background-color: $very-light-gray;
@@ -27,7 +26,6 @@ body {
       border: none;
       width: 25px;
       aspect-ratio: 1 / 1;
-      background-image: url("images/icon-moon.svg");
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
@@ -128,16 +126,9 @@ body {
       pointer-events: none;
     }
     input[type=checkbox]:checked ~ .checkmark {
-      background-image: $check-background;
+      background-repeat: no-repeat;
+      background-position: center;
       border: none;
-      &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url("images/icon-check.svg");
-        background-repeat: no-repeat;
-        background-position: center;
-      }
     }
   }
 
