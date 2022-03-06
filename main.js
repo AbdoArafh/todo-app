@@ -21,19 +21,18 @@ const itemsLeftEl = $("#itemsLeftEl");
 // ------------ adding background images ------------------
 
 import body_bg_desktop_light from './images/bg-desktop-light.jpg'
+import body_bg_desktop_dark from './images/bg-desktop-dark.jpg'
 import icon_moon from './images/icon-moon.svg'
 import icon_sun from './images/icon-sun.svg'
 import checkmark from './images/icon-check.svg'
 
+let isDark = false;
+const toggleDarkImages = [`url("${icon_moon}")`, `url("${icon_sun}")`];
+const bodyBackgrounds = [`url("${body_bg_desktop_light}")`, `url("${body_bg_desktop_dark}")`];
+
 const checkmarkGradient = "linear-gradient(to bottom right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))";
 Array.from($$(".mark input[type=checkbox]")).forEach(handleCheckmark);
 
-document.body.style.backgroundImage = `url("${body_bg_desktop_light}")`;
-
-const toggleDarkImages = [`url("${icon_moon}")`, `url("${icon_sun}")`];
-let isDark = false;
-
-toggleDarkEl.style.backgroundImage = toggleDarkImages[0];
 toggleDarkEl.on("click", handleToggleDark);
 
 class Note {
@@ -45,9 +44,20 @@ class Note {
 
 let notes = [];
 
-function handleToggleDark(e) {
-  isDark = !isDark;
-  e.target.style.backgroundImage = toggleDarkImages[Number(isDark)];
+function switchImages() {
+  toggleDarkEl.style.backgroundImage = toggleDarkImages[Number(isDark)];
+  document.body.style.backgroundImage = bodyBackgrounds[Number(isDark)];
+}
+
+function toggleDarkMode(newValue) {
+  isDark = newValue;
+  localStorage.setItem("isDark", isDark);
+  document.body.className = isDark ? "dark" : "";
+  switchImages();
+}
+
+function handleToggleDark() {
+  toggleDarkMode(!isDark);
 }
 
 function renderCheckmark(el) {
@@ -99,8 +109,13 @@ function noteEl(note) {
     const checkbox = e.target.parentElement.querySelector("input[type=checkbox]");
     handleCheckbox(checkbox);
     checkbox.checked = !checkbox.checked;
+    renderCheckmark(checkbox);
   });
   li.appendChild(span);
+  const deleteButton = document.createElement("button");
+  deleteButton.className = "delete-button";
+  deleteButton.textContent = "X";
+  li.appendChild(deleteButton);
   li.className = note.checked ? "completed" : "";
   li.draggable = true;
   return li;
@@ -181,6 +196,8 @@ window.addEventListener("load", () => {
   notes = JSON.parse(localStorage.getItem("notes") ?? "[]");
   chosenFilter = localStorage.getItem("chosenFilter") ?? "All";
   $$(".mark input[type=checkbox]").forEach(renderCheckmark);
+  isDark = (localStorage.getItem("isDark") ?? "false") === "true" ? true : false;
+  toggleDarkMode(isDark);
   renderItemsLeftEl();
   renderFilters(filters);
   filterNotes();

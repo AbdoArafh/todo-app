@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
 @import 'vars';
 
@@ -8,15 +9,24 @@ body {
   display: grid;
   place-items: center;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 100% 30vh;
   background-color: $very-light-gray;
   font-family: $font-family;
   font-size: $font-size;
 }
 
+.attribution {
+  font-size: 11px;
+  text-align: center;
+  a {
+    color: hsl(228, 45%, 44%);
+  }
+}
+
 #app {
   .header {
     color: $very-light-gray;
+    margin-top: 2em;
     letter-spacing: 0.75rem;
     display: flex;
     justify-content: space-between;
@@ -47,7 +57,7 @@ body {
     input[type=text] {
       border: none;
       flex-grow: 2;
-      background-color: $very-light-gray;
+      background-color: transparent;
       font-size: $font-size;
       &:focus,
       &:focus-within {
@@ -60,13 +70,15 @@ body {
     border-radius: $border-radius;
     filter: drop-shadow(0 0 5px $dark-grayish-blue);
     .completed {
-      text-decoration: line-through;
-      color: $light-grayish-blue;
+      span {
+        text-decoration: line-through;
+        color: $light-grayish-blue;
+      }
     }
     ul {
       list-style: none;
       padding: 0;
-      padding-bottom: $padding-y / 5;
+      padding-bottom: math.div($padding-y, 5);
       li {
         display: flex;
         flex-direction: row;
@@ -75,9 +87,23 @@ body {
         padding: $padding-y $padding-x;
         border: 1px solid transparent;
         border-bottom-color: $light-grayish-blue;
-        color: $very-dark-grayish-blue;
         span {
           flex-grow: 2;
+          color: $very-dark-grayish-blue;
+          cursor: pointer;
+        }
+        .delete-button {
+          background-color: transparent;
+          border: none;
+          color: $light-grayish-blue;
+          cursor: pointer;
+          font-size: 1.1em;
+          visibility: hidden;
+        }
+        &:hover {
+          .delete-button {
+            visibility: visible;
+          }
         }
       }
     }
@@ -86,7 +112,7 @@ body {
       flex-direction: row;
       justify-content: space-between;
       color: $light-grayish-blue;
-      font-size: $font-size * (3/4);
+      font-size: $font-size * math.div(3, 4);
       padding: 0 $padding-x $padding-y $padding-x;
       .filters {
         display: flex;
@@ -118,7 +144,7 @@ body {
       opacity: 0;
       cursor: pointer;
     }
-    input[type=checkbox] ~ .checkmark {
+    .checkmark {
       position: absolute;
       inset: 0;
       border: 1px solid $light-grayish-blue;
@@ -135,7 +161,60 @@ body {
   .tip {
     text-align: center;
     margin: 3em 0;
-    font-size: $font-size * (3/4);
+    font-size: $font-size * math.div(3, 4);
     color: $light-grayish-blue;
+  }
+}
+
+.dark {
+  background-color: $very-dark-blue;
+  #app {
+    .input {
+      background-color: $very-dark-Desaturated-blue;
+      input[type=text] {
+        color: $very-light-gray;
+      }
+    }
+    .list {
+      background-color: $very-dark-Desaturated-blue;
+      filter: drop-shadow(0 0 5px black);
+      ul li {
+        border-bottom-color: $very-dark-grayish-blue;
+        span {
+          color: $very-light-grayish-blue;
+        }
+        .delete-button {
+          color: $very-dark-grayish-blue;
+          &:hover {
+            color: $very-light-grayish-blue;
+          }
+        }
+      }
+      .completed {
+        span {
+          color: $very-dark-grayish-blue;
+        }
+      }
+      .controls {
+        color: $dark-grayish-blue;
+        .filters *:hover {
+          color: $very-light-grayish-blue;
+        }
+        .clear:hover {
+          color: $very-light-grayish-blue;
+        }
+      }
+    }
+    .tip {
+      color: $very-dark-Desaturated-blue;
+    }
+    .mark {
+      .checkmark {
+        border-color: $very-dark-grayish-blue;
+      }
+    }
+  }
+  .attribution {
+    color: $dark-grayish-blue;
   }
 }
