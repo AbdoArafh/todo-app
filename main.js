@@ -124,6 +124,7 @@ function handleSubmit(event) {
   const note = new Note(inputEl.value, checkboxEl.checked);
   inputEl.value = "";
   checkboxEl.checked = false;
+  renderCheckmark(checkboxEl);
   renderItemsLeftEl();
   appendNote(note);
   filterNotes();
