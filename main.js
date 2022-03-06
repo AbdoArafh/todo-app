@@ -121,6 +121,7 @@ function appendNote(note) {
 
 function handleSubmit(event) {
   event.preventDefault();
+  if (!inputEl.value) return;
   const note = new Note(inputEl.value, checkboxEl.checked);
   inputEl.value = "";
   checkboxEl.checked = false;
