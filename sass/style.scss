@@ -232,6 +232,11 @@ body {
   #app {
     width: unset;
     .list {
+      ul li {
+        .delete-button {
+          visibility: visible;
+        }
+      }
       .filters {
         $inline-padding: 7em;
         position: absolute;
