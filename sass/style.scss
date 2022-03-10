@@ -2,6 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
 @import 'vars';
 
+:root {
+  --font-size: 18px;
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -12,7 +16,7 @@ body {
   background-size: 100% 30vh;
   background-color: $very-light-gray;
   font-family: $font-family;
-  font-size: $font-size;
+  font-size: var(--font-size);
 }
 
 .attribution {
@@ -24,6 +28,8 @@ body {
 }
 
 #app {
+  width: 90%;
+  max-width: 640px;
   .header {
     color: $very-light-gray;
     margin-top: 2em;
@@ -58,7 +64,7 @@ body {
       border: none;
       flex-grow: 2;
       background-color: transparent;
-      font-size: $font-size;
+      font-size: var(--font-size);
       &:focus,
       &:focus-within {
         outline: none;
@@ -112,7 +118,7 @@ body {
       flex-direction: row;
       justify-content: space-between;
       color: $light-grayish-blue;
-      font-size: $font-size * math.div(3, 4);
+      font-size: calc(var(--font-size) * math.div(3, 4));
       padding: 0 $padding-x $padding-y $padding-x;
       .filters {
         display: flex;
@@ -161,7 +167,7 @@ body {
   .tip {
     text-align: center;
     margin: 3em 0;
-    font-size: $font-size * math.div(3, 4);
+    font-size: calc(var(--font-size) * math.div(3, 4));
     color: $light-grayish-blue;
   }
 }
@@ -216,5 +222,37 @@ body {
   }
   .attribution {
     color: $dark-grayish-blue;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  :root {
+    --font-size: 16px;
+  }
+  #app {
+    width: unset;
+    .list {
+      .filters {
+        $inline-padding: 7em;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: translateY(5.2em);
+        width: calc(100% - ($inline-padding * 2));
+        display: flex;
+        background-color: $very-light-gray;
+        justify-content: space-between;
+        padding: 1.4em $inline-padding;
+        border-radius: $border-radius;
+        font-weight: $font-bold;
+      }
+    }
+    .tip {
+      margin-top: 8em;
+    }
+  }
+  .dark #app .list .filters {
+    background-color: $very-dark-Desaturated-blue;
   }
 }

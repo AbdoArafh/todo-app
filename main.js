@@ -22,13 +22,25 @@ const itemsLeftEl = $("#itemsLeftEl");
 
 import body_bg_desktop_light from './images/bg-desktop-light.jpg'
 import body_bg_desktop_dark from './images/bg-desktop-dark.jpg'
+import body_bg_mobile_dark from './images/bg-mobile-dark.jpg'
+import body_bg_mobile_light from './images/bg-mobile-light.jpg'
 import icon_moon from './images/icon-moon.svg'
 import icon_sun from './images/icon-sun.svg'
 import checkmark from './images/icon-check.svg'
 
 let isDark = false;
+let isDesktop = true;
 const toggleDarkImages = [`url("${icon_moon}")`, `url("${icon_sun}")`];
-const bodyBackgrounds = [`url("${body_bg_desktop_light}")`, `url("${body_bg_desktop_dark}")`];
+const bodyBackgrounds = [
+  [
+    `url("${body_bg_mobile_light}")`,
+    `url("${body_bg_mobile_dark}")`
+  ],
+  [
+    `url("${body_bg_desktop_light}")`,
+    `url("${body_bg_desktop_dark}")`
+  ]
+];
 
 const checkmarkGradient = "linear-gradient(to bottom right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))";
 Array.from($$(".mark input[type=checkbox]")).forEach(handleCheckmark);
@@ -44,9 +56,19 @@ class Note {
 
 let notes = [];
 
+function handleBackgroundSize() {
+  let { width } = this.getComputedStyle(document.body);
+  width = Number(width.replace("px", ""));
+  isDesktop = width > 640;
+  switchImages();
+}
+
+handleBackgroundSize.call(window);
+window.addEventListener("resize", handleBackgroundSize);
+
 function switchImages() {
   toggleDarkEl.style.backgroundImage = toggleDarkImages[Number(isDark)];
-  document.body.style.backgroundImage = bodyBackgrounds[Number(isDark)];
+  document.body.style.backgroundImage = bodyBackgrounds[Number(isDesktop)][Number(isDark)];
 }
 
 function toggleDarkMode(newValue) {
@@ -115,6 +137,16 @@ function noteEl(note) {
   const deleteButton = document.createElement("button");
   deleteButton.className = "delete-button";
   deleteButton.textContent = "X";
+  deleteButton.dataset.index = notes.indexOf(note);
+  deleteButton.addEventListener(
+    "click",
+    e => {
+      notes.splice(Number(e.target.dataset.index), 1);
+      renderItemsLeftEl();
+      filterNotes();
+      updateLocalStorage();
+    }
+  );
   li.appendChild(deleteButton);
   li.className = note.checked ? "completed" : "";
   li.draggable = true;
