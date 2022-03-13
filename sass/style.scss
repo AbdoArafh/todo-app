@@ -261,3 +261,11 @@ body {
     background-color: $very-dark-Desaturated-blue;
   }
 }
+
+[draggable=true] {
+  transition: transform 0.35s ease;
+}
+
+.over {
+  transform: scale(1.1);
+}

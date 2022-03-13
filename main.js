@@ -122,7 +122,7 @@ function checkEl(checked) {
   return mark;
 }
 
-function noteEl(note) {
+function noteEl(note, index) {
   const li = document.createElement("li");
   li.appendChild(checkEl(note.checked));
   const span = document.createElement("span");
@@ -150,14 +150,16 @@ function noteEl(note) {
   li.appendChild(deleteButton);
   li.className = note.checked ? "completed" : "";
   li.draggable = true;
+  li.dataset.index = index;
+  addEventsDragAndDrop(li);
   return li;
 }
 
-function renderNotes(notes) {
+function renderNotes(notes, allNotes=notes) {
   listEl.innerHTML = "";
   updateLocalStorage();
   notes.forEach(
-    note => listEl.appendChild(noteEl(note))
+    note => listEl.appendChild(noteEl(note, allNotes.indexOf(note)))
   );
 }
 
@@ -183,7 +185,7 @@ $("#form").on("submit", handleSubmit);
 let chosenFilter = "All";
 
 function filterNotes() {
-  renderNotes(notes.filter(filters[chosenFilter]));
+  renderNotes(notes.filter(filters[chosenFilter]), notes);
 }
 
 function renderFilters(filters) {
@@ -238,4 +240,56 @@ window.addEventListener("load", () => {
 function updateLocalStorage() {
   localStorage.setItem("notes", JSON.stringify(notes));
   localStorage.setItem("chosenFilter", chosenFilter);
+}
+
+let dragSrcEl;
+
+function dragStart(e) {
+  this.style.opacity = '0.4';
+  dragSrcEl = this;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/html', this.innerHTML);
+};
+ 
+function dragEnter(e) {
+  this.classList.add('over');
+}
+ 
+function dragLeave(e) {
+  e.stopPropagation();
+  this.classList.remove('over');
+}
+ 
+function dragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  return false;
+}
+ 
+function dragDrop(e) {
+  if (dragSrcEl != this) {
+    const i = +this.dataset.index;
+    const j = +dragSrcEl.dataset.index;
+    [notes[i], notes[j]] = [notes[j], notes[i]];
+    updateLocalStorage();
+    filterNotes();
+  }
+  return false;
+}
+ 
+function dragEnd(e) {
+  var listItems = document.querySelectorAll('[draggable=true]');
+  listItems.forEach(
+    item => item.classList.remove('over')
+  );
+  this.style.opacity = '1';
+}
+
+function addEventsDragAndDrop(el) {
+  el.addEventListener('dragstart', dragStart);
+  el.addEventListener('dragenter', dragEnter);
+  el.addEventListener('dragover', dragOver);
+  el.addEventListener('dragleave', dragLeave);
+  el.addEventListener('drop', dragDrop);
+  el.addEventListener('dragend', dragEnd);
 }
