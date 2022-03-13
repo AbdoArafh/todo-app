@@ -230,7 +230,7 @@ window.addEventListener("load", () => {
   notes = JSON.parse(localStorage.getItem("notes") ?? "[]");
   chosenFilter = localStorage.getItem("chosenFilter") ?? "All";
   $$(".mark input[type=checkbox]").forEach(renderCheckmark);
-  isDark = (localStorage.getItem("isDark") ?? "false") === "true" ? true : false;
+  isDark = (localStorage.getItem("isDark") ?? isDark.toString()) === "true" ? true : false;
   toggleDarkMode(isDark);
   renderItemsLeftEl();
   renderFilters(filters);
