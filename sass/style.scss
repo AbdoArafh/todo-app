@@ -13,7 +13,7 @@ body {
   display: grid;
   place-items: center;
   background-repeat: no-repeat;
-  background-size: 100% 30vh;
+  background-size: 100% 35vh;
   background-color: $very-light-gray;
   font-family: $font-family;
   font-size: var(--font-size);
@@ -29,10 +29,10 @@ body {
 
 #app {
   width: 90%;
-  max-width: 640px;
+  max-width: 520px;
   .header {
     color: $very-light-gray;
-    margin-top: 2em;
+    margin-top: 4em;
     letter-spacing: 0.75rem;
     display: flex;
     justify-content: space-between;

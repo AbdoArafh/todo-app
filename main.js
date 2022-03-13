@@ -28,7 +28,7 @@ import icon_moon from './images/icon-moon.svg'
 import icon_sun from './images/icon-sun.svg'
 import checkmark from './images/icon-check.svg'
 
-let isDark = false;
+let isDark = true;
 let isDesktop = true;
 const toggleDarkImages = [`url("${icon_moon}")`, `url("${icon_sun}")`];
 const bodyBackgrounds = [
